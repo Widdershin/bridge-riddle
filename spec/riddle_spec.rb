@@ -2,6 +2,7 @@ require_relative '../riddle'
 
 class State
   attr_reader :people_on_start_side, :people_on_other_side
+  attr_reader :time
   attr_reader :side_lantern_is_on
 
   def initialize(people_on_start_side:, people_on_other_side:, time: 0)
@@ -15,12 +16,16 @@ class State
     if @side_lantern_is_on == :start
       @people_on_start_side -= movement
       @people_on_other_side += movement
+
       @side_lantern_is_on = :other
     else
       @people_on_start_side += movement
       @people_on_other_side -= movement
+
       @side_lantern_is_on = :start
     end
+
+    @time += movement.max
 
     self
   end
@@ -59,6 +64,7 @@ describe Riddle do
 
       expect(state.people_on_start_side.count).to eq 0
       expect(state.people_on_other_side.count).to eq 4
+      expect(state.time).to eq results.time
     end
   end
 end
