@@ -29,9 +29,7 @@ end
 require 'ostruct'
 
 describe Riddle do
-  let(:people) {
-    [1, 2, 5, 10]
-  }
+  let(:people) { [1, 2, 5, 10] }
 
   subject(:results) { Riddle.new(people).call }
 
