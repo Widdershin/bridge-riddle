@@ -1,5 +1,4 @@
 require_relative '../riddle'
-require_relative '../person'
 
 class State
   attr_reader :people_on_start_side, :people_on_other_side

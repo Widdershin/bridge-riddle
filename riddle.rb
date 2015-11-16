@@ -1,5 +1,4 @@
 require 'ostruct'
-require './person'
 
 class Riddle
   def initialize(people)
