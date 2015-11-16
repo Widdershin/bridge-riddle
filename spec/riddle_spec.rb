@@ -38,33 +38,20 @@ describe Riddle do
 
   subject(:results) { Riddle.new(people).call }
 
-  it 'takes all of the people across the bridge in less than 17 minutes' do
-    expect(results.time).to be <= 17
+  it 'gets everyone across the bridge in 17 minutes or less' do
+    state = State.new(people_on_start_side: people, people_on_other_side: [])
 
-    p results
-  end
+    expect(state.people_on_start_side.count).to eq 4
+    expect(state.people_on_other_side.count).to eq 0
+    expect(state.side_lantern_is_on).to eq :start
 
-  it 'returns movements' do
-    expect(results.movements).to be_an Array
-  end
-
-  describe '#movements' do
-    subject(:movements) { results.movements }
-
-    it 'describes a series of moves to get everyone across' do
-      state = State.new(people_on_start_side: people, people_on_other_side: [])
-
-      expect(state.people_on_start_side.count).to eq 4
-      expect(state.people_on_other_side.count).to eq 0
-      expect(state.side_lantern_is_on).to eq :start
-
-      movements.reduce(state) do |state, movement|
-        state.update(movement)
-      end
-
-      expect(state.people_on_start_side.count).to eq 0
-      expect(state.people_on_other_side.count).to eq 4
-      expect(state.time).to eq results.time
+    results.movements.reduce(state) do |state, movement|
+      state.update(movement)
     end
+
+    expect(state.people_on_start_side.count).to eq 0
+    expect(state.people_on_other_side.count).to eq 4
+    expect(state.time).to eq results.time
+    expect(results.time).to be <= 17
   end
 end
