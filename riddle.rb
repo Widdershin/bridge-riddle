@@ -7,34 +7,34 @@ class Riddle
 
   def call
     recursive_solution(
-      people_on_start: @people,
+      people_on_start_side: @people,
       people_on_other_side: [],
       time: 0
     )
   end
 
-  def recursive_solution(people_on_start:, people_on_other_side:, time: 0, movements: [], lantern_on: :start)
+  def recursive_solution(people_on_start_side:, people_on_other_side:, time: 0, movements: [], lantern_on: :start)
     return OpenStruct.new(
       movements: movements,
       time: time,
       success: people_on_other_side.count == 4 && time <= 17
     ) if time > 17 || people_on_other_side.count == 4
 
-    people_to_move = lantern_on == :start ? people_on_start : people_on_other_side
+    people_to_move = lantern_on == :start ? people_on_start_side : people_on_other_side
 
     possible_moves = moves_to_try(people_to_move, lantern_on)
 
     results = possible_moves.lazy.map do |people_moving|
       if lantern_on == :start
-        updated_people_on_start = people_on_start - people_moving
+        updated_people_on_start_side = people_on_start_side - people_moving
         updated_people_on_other_side = people_on_other_side + people_moving
       else
-        updated_people_on_start = people_on_start + people_moving
+        updated_people_on_start_side = people_on_start_side + people_moving
         updated_people_on_other_side = people_on_other_side - people_moving
       end
 
       recursive_solution(
-        people_on_start: updated_people_on_start,
+        people_on_start_side: updated_people_on_start_side,
         people_on_other_side: updated_people_on_other_side,
         time: time + people_moving.max,
         movements: movements + [people_moving],
