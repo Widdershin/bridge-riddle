@@ -37,7 +37,7 @@ class Riddle
       recursive_solution(
         people_on_start: updated_people_on_start,
         people_on_other_side: updated_people_on_other_side,
-        time: time + people_moving.min,
+        time: time + people_moving.max,
         movements: movements + [people_moving],
         lantern_on: lantern_on == :start ? :other : :start
       )
